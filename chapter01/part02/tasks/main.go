@@ -31,13 +31,13 @@ func task02() {
 func task03() {
 	start := time.Now()
 	for i := 0; i < 10000; i++ {
-		go task01()
+		task01()
 	}
 	durationOfTask01 := time.Since(start).Milliseconds()
 
 	start = time.Now()
 	for i := 0; i < 10000; i++ {
-		go task02()
+		task02()
 	}
 	durationOfTask02 := time.Since(start).Milliseconds()
 
