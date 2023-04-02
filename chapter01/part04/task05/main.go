@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var pallete = []color.Color{color.White, color.Black}
+var pallete = []color.Color{color.Black, color.RGBA{0x00, 0xff, 0x00, 0xff}}
 
 const (
 	whiteIndex = 0
@@ -47,7 +47,7 @@ func lissajous(out io.Writer) {
 		anim.Image = append(anim.Image, img)
 	}
 	//gif.EncodeAll(out, &anim)
-	file, err := os.Create("lsj1.gif")
+	file, err := os.Create("lsj.gif")
 	if err != nil {
 		panic(err)
 	}
