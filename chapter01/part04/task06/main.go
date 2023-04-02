@@ -11,12 +11,14 @@ import (
 	"time"
 )
 
-var pallete = []color.Color{color.White, color.Black}
-
-const (
-	whiteIndex = 0
-	blackIndex = 1
-)
+var pallete = []color.Color{
+	color.Black,
+	color.RGBA{0x00, 0xff, 0x00, 0xff},
+	color.RGBA{0xff, 0xff, 0x00, 0xff},
+	color.RGBA{0x00, 0xff, 0xff, 0xff},
+	color.RGBA{0x00, 0x00, 0xff, 0xff},
+	color.RGBA{0xff, 0x00, 0x00, 0xff},
+}
 
 func main() {
 	lissajous(os.Stdout)
@@ -31,6 +33,7 @@ func lissajous(out io.Writer) {
 		delay   = 8
 	)
 	rand.Seed(time.Now().UnixNano())
+	inc := increment(len(pallete))
 	freq := rand.Float64() * 3.0
 	anim := gif.GIF{LoopCount: nframes}
 	phase := 0.0
@@ -40,17 +43,33 @@ func lissajous(out io.Writer) {
 		for t := 0.0; t < cycles*math.Pi*2; t += res {
 			x := math.Sin(t)
 			y := math.Sin(t*freq + phase)
-			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), blackIndex)
+			img.SetColorIndex(size+int(x*size+0.5), size+int(y*size+0.5), inc())
 		}
 		phase += 0.1
 		anim.Delay = append(anim.Delay, delay)
 		anim.Image = append(anim.Image, img)
 	}
-	//gif.EncodeAll(out, &anim)
-	file, err := os.Create("lsj1.gif")
+	file, err := os.Create("lsj.gif")
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
 	gif.EncodeAll(file, &anim)
+}
+
+func increment(n int) func() uint8 {
+	idx := 0
+	return func() uint8 {
+		if rand.Intn(2) == 0 {
+			idx++
+		} else {
+			idx--
+		}
+		if idx < 1 {
+			idx = n - 1
+		} else if idx > n-1 {
+			idx = 1
+		}
+		return uint8(idx)
+	}
 }
