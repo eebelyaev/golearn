@@ -21,6 +21,6 @@ func main() {
 			fmt.Fprintf(os.Stderr, "fetch: %v\n", err)
 			os.Exit(1)
 		}
-		fmt.Printf("\nСтатус %s: %v\n", url, resp.Status)
+		fmt.Printf("\nStatus %s: %v\n", url, resp.Status)
 	}
 }

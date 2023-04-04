@@ -8,9 +8,8 @@ import (
 )
 
 func main() {
-	// urlNames := []string{"http://ya.ru", "http://google.com"}
-	// for _, url := range urlNames {
-	for _, url := range os.Args[1:] {
+	urlNames := []string{"http://ya.ru", "http://google.com"}
+	for _, url := range urlNames {
 		fmt.Println(url)
 		resp, err := http.Get(url)
 		if err != nil {
