@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"golearn/chapter01/part07/task12/gifgen"
 	"image"
 	"image/color"
@@ -11,7 +10,6 @@ import (
 	"math"
 	"math/rand"
 	"net/http"
-	"os"
 	"strconv"
 )
 
@@ -23,18 +21,31 @@ func main() {
 	log.Fatal(http.ListenAndServe("localhost:8000", nil))
 }
 
+func toInt(s string) int {
+	c, err := strconv.Atoi(s)
+	if err != nil {
+		log.Printf("from: handler(http.ResponseWriter, *http.Request), error: %s", err)
+		return 1
+	}
+	return c
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "image/gif")
-	// for i, q := range r.URL.Query() {
-	// 	fmt.Fprintf(os.Stdout, "%q\t%q", i, q)
-	// }
-	if r.URL.Query().Has("cycles") {
-		c, err := strconv.Atoi(r.URL.Query().Get("cycles"))
-		if err != nil {
-			log.Printf("from: handler(http.ResponseWriter, *http.Request), error: %s", err)
-			return
+	for k, v := range r.URL.Query() {
+		//fmt.Printf("%v\t%v", k, v)
+		switch k {
+		case "cycles":
+			g.Cycles = toInt(v[0])
+		case "res":
+			g.Res = float64(toInt(v[0]))
+		case "size":
+			g.Size = toInt(v[0])
+		case "nframes":
+			g.Nframes = toInt(v[0])
+		case "delay":
+			g.Size = toInt(v[0])
 		}
-		g.Cycles = c
 	}
 	lissajous(w)
 }
@@ -43,7 +54,6 @@ func lissajous(w io.Writer) {
 	freq := rand.Float64() * 3.0
 	anim := gif.GIF{LoopCount: g.Nframes}
 	phase := 0.0
-	fmt.Fprintf(os.Stdout, "%f\n", freq)
 	for i := 0; i < g.Nframes; i++ {
 		rect := image.Rect(0, 0, 2*g.Size+1, 2*g.Size+1)
 		img := image.NewPaletted(rect, []color.Color{color.White, color.Black})
