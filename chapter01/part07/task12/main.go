@@ -18,7 +18,7 @@ var g gifgen.Gif
 func main() {
 	g = gifgen.New()
 	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe("localhost:8000", nil))
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }
 
 func toInt(s string) int {
