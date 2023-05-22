@@ -47,7 +47,6 @@ func getParams(args []string) (string, []string, error) {
 	}
 
 	if len(args) <= 1 {
-		fmt.Println("getParams:len(args) == 1")
 		return "", nil, errors.New("getParams:input data incorrect")
 	} else {
 		return args[0], args[1:], nil
@@ -73,6 +72,7 @@ func print(typeOp string, vals []string) {
 		fmt.Fprintf(os.Stderr, "print: %v\n", err)
 		os.Exit(1)
 	}
+
 	for _, arg := range vals {
 		t, err := strconv.ParseFloat(arg, 64)
 		if err != nil {
