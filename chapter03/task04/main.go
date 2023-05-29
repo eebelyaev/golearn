@@ -5,7 +5,6 @@
 package main
 
 import (
-	"fmt"
 	"golearn/chapter03/task04/draw"
 	"log"
 	"net/http"
@@ -27,13 +26,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 			draw.MeshWidth = toFloat(v[0])
 		case "cells":
 			draw.Cells = toInt(v[0])
-			// case "nframes":
-			// 	g.Nframes = toInt(v[0])
-			// case "delay":
-			// 	g.Size = toInt(v[0])
 		}
 	}
-	fmt.Println(draw.MeshWidth)
 	draw.Print(w)
 }
 

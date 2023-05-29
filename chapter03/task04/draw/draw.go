@@ -22,8 +22,8 @@ var sin30, cos30 = math.Sin(angle), math.Cos(angle) //sin(30°),cos(30°)
 
 func Print(w io.Writer) {
 	fmt.Fprintf(w, "<svg xmlns='http://www.w3.org/2000/svg' "+
-		"style='stroke: %s; fill: white; stroke-width: 0.5' "+
-		"width='%d' height='%d' >\n", MeshColor, Width, Height)
+		"style='stroke: %s; fill: white; stroke-width: %f' "+
+		"width='%d' height='%d' >\n", MeshColor, MeshWidth, Width, Height)
 	for i := 0; i < Cells; i++ {
 		for j := 0; j < Cells; j++ {
 			ax, ay := corner(i+1, j)
