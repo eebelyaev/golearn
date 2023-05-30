@@ -5,12 +5,13 @@ import (
 )
 
 func main() {
+	const tmpl = "%s is anagram %s. It's %v\n"
 	s1 := "12345🤣6789🤣"
 	s2 := "🤣6789🤣12345"
-	fmt.Printf("%s is anagram %s. It's %v\n", s1, s2, isAnagram(s1, s2))
+	fmt.Printf(tmpl, s1, s2, isAnagram(s1, s2))
 	s1 = "12345🤣6789"
 	s2 = "12345678😂9"
-	fmt.Printf("%s is anagram %s. It's %v\n", s1, s2, isAnagram(s1, s2))
+	fmt.Printf(tmpl, s1, s2, isAnagram(s1, s2))
 }
 
 func isAnagram(s1 string, s2 string) bool {
