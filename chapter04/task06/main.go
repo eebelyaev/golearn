@@ -2,17 +2,43 @@ package main
 
 import (
 	"fmt"
+	"unicode"
+	"unicode/utf8"
 )
 
+const asciiSpace = ' '
+
 func main() {
-	s := []string{"1", "2", "3", "3", "4", "5", "5", "5", "5", "5", "5", "5", "1"}
-	fmt.Printf("%v, %T\n", s, s)
-	for i, j := 0, 0; i < len(s)-1; i++ {
-		for j = i + 1; j < len(s) && s[i] == s[j]; j++ {
+	sb := []byte("🤣\nHello\t\t🤣")
+	print(sb)
+	sb = removeSpaces(sb)
+	print(sb)
+}
+
+func removeSpaces(sb []byte) []byte {
+	firstSpace := -1
+	for i := 0; i < len(sb); {
+		r, size := utf8.DecodeRuneInString(string(sb[i:]))
+		if unicode.IsSpace(r) {
+			if firstSpace < 0 {
+				firstSpace = i
+			}
+		} else {
+			if firstSpace >= 0 {
+				sb[firstSpace] = asciiSpace
+				sb = append(sb[:firstSpace+1], sb[i:]...)
+				firstSpace = -1
+			}
 		}
-		if j--; i != j {
-			s = append(s[:i], s[j:]...)
-		}
+		i += size
 	}
-	fmt.Printf("%v, %T\n", s, s)
+	if firstSpace >= 0 {
+		sb = append(sb[:firstSpace], asciiSpace)
+	}
+	return sb
+}
+
+func print(sb []byte) {
+	fmt.Printf("%q\n", sb)
+	fmt.Printf("%v\n", sb)
 }
