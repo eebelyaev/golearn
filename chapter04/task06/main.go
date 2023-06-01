@@ -18,7 +18,7 @@ func main() {
 func removeSpaces(sb []byte) []byte {
 	firstSpace := -1
 	for i := 0; i < len(sb); {
-		r, size := utf8.DecodeRuneInString(string(sb[i:]))
+		r, size := utf8.DecodeRune(sb[i:])
 		if unicode.IsSpace(r) {
 			if firstSpace < 0 {
 				firstSpace = i
