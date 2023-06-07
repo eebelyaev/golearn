@@ -14,14 +14,18 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	periods := getPeriods(result.Items)
+	printPeriods(periods)
+}
 
-	var periods [3][]*github.Issue
+func getPeriods(items []*github.Issue) [][]*github.Issue {
+	periods := make([][]*github.Issue, 3)
 	for i := 0; i < 3; i++ {
 		periods[i] = make([]*github.Issue, 0)
 	}
 
 	t := time.Now()
-	for _, item := range result.Items {
+	for _, item := range items {
 		h := t.Sub(item.CreatedAt).Hours()
 		switch {
 		case h < 24*30:
@@ -32,6 +36,10 @@ func main() {
 			periods[2] = append(periods[2], item)
 		}
 	}
+	return periods
+}
+
+func printPeriods(periods [][]*github.Issue) {
 	for i, p := range periods {
 		fmt.Printf("\n%v\n", i)
 		for _, item := range p {
