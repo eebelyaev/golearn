@@ -21,26 +21,25 @@ func main() {
 		fmt.Fprintf(os.Stderr, "main: %v\n", err)
 		os.Exit(1)
 	}
-	for _, link := range visit(nil, doc) {
-		fmt.Println(link)
+	for k, v := range visitMap(nil, doc) {
+		fmt.Println(k, ": ", v)
 	}
 }
 
-// visit добавляет в links все ссылки,
+// visitMap добавляет в m все ссылки,
 // найденные в n, и возвращает результат.
-func visit(links []string, n *html.Node) []string {
+func visitMap(m map[string]int, n *html.Node) map[string]int {
+	if m == nil {
+		m = make(map[string]int, 0)
+	}
 	if n == nil {
-		return links
+		return m
 	}
-	if n.Type == html.ElementNode && n.Data == "a" {
-		for _, a := range n.Attr {
-			if a.Key == "href" {
-				links = append(links, a.Val)
-			}
-		}
+	if n.Type == html.ElementNode {
+		m[n.Data]++
 	}
-	links = visit(links, n.FirstChild)
-	return visit(links, n.NextSibling)
+	m = visitMap(m, n.FirstChild)
+	return visitMap(m, n.NextSibling)
 }
 
 func loadHTML(filename string) (*os.File, error) {
