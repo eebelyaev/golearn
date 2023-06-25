@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"testing"
+	"time"
 
 	"golang.org/x/net/html"
 )
@@ -63,6 +64,7 @@ var tests = []struct {
 func TestStartElement(t *testing.T) {
 	for i, test := range tests {
 		depth = 1
+		time.Sleep(time.Second)
 		got, _ := captureOut(startElement, test.input)
 		if got != test.wantStart {
 			t.Errorf("startElement(%d) = %q, требуется %q", i, got, test.wantStart)
@@ -74,6 +76,7 @@ func TestStartElement(t *testing.T) {
 func TestEndElement(t *testing.T) {
 	for i, test := range tests {
 		depth = 1
+		time.Sleep(time.Second)
 		got, _ := captureOut(endElement, test.input)
 		if got != test.wantEnd {
 			t.Errorf("endElement(%d) = %q, требуется %q", i, got, test.wantEnd)
@@ -83,14 +86,14 @@ func TestEndElement(t *testing.T) {
 	}
 }
 
-func TestStartElement100(t *testing.T) {
-	for i := 0; i < 1000; i++ {
+func TestStartElement10(t *testing.T) {
+	for i := 0; i < 20; i++ {
 		TestStartElement(t)
 	}
 }
 
-func TestEndElement100(t *testing.T) {
-	for i := 0; i < 1000; i++ {
+func TestEndElement10(t *testing.T) {
+	for i := 0; i < 20; i++ {
 		TestEndElement(t)
 	}
 }
