@@ -23,7 +23,14 @@ func main() {
 
 func startElement(n *html.Node) {
 	if n.Type == html.ElementNode {
-		fmt.Printf("%*s<%s>\n", depth*2, "", n.Data)
+		s := fmt.Sprintf("%*s<%s", depth*2, "", n.Data)
+		for _, a := range n.Attr {
+			s += fmt.Sprintf(" %s=\"%s\"", a.Key, a.Val)
+		}
+		if n.FirstChild == nil {
+			s += "/"
+		}
+		fmt.Println(s + ">")
 		depth++
 	} else if n.Type == html.TextNode || n.Type == html.CommentNode {
 		if s := strings.TrimSpace(n.Data); s != "" {
@@ -36,7 +43,9 @@ func startElement(n *html.Node) {
 func endElement(n *html.Node) {
 	if n.Type == html.ElementNode {
 		depth--
-		fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
+		if n.FirstChild != nil {
+			fmt.Printf("%*s</%s>\n", depth*2, "", n.Data)
+		}
 	} else if n.Type == html.CommentNode || n.Type == html.TextNode {
 		depth--
 	}
