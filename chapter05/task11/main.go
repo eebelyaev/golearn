@@ -38,11 +38,11 @@ func main() {
 
 func topoSort(m map[string]map[string]struct{}) (order []string, err error) {
 	seen := make(map[string]bool)
-	chain := make(map[string]struct{})
+	var parentKey string
 	var visitAll func(map[string]struct{}) error
 	visitAll = func(items map[string]struct{}) error {
 		for key := range items {
-			if _, found := chain[key]; found {
+			if key == parentKey {
 				return fmt.Errorf("для курса %s обнаружен цикл", key)
 			}
 			if !seen[key] {
@@ -60,12 +60,11 @@ func topoSort(m map[string]map[string]struct{}) (order []string, err error) {
 	for key := range m {
 		if !seen[key] {
 			seen[key] = true
-			chain[key] = struct{}{}
+			parentKey = key
 			err = visitAll(m[key])
 			if err != nil {
 				return
 			}
-			delete(chain, key)
 			order = append(order, key)
 		}
 	}
