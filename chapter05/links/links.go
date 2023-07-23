@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-// Extraract выполняет HTTP-запрос GET по определенному URL, выполняет
+// Extract выполняет HTTP-запрос GET по определенному URL, выполняет
 // синтаксический анализ HTML и возвращает ссылки в HTML-документе.
 func Extract(url string) ([]string, error) {
 	resp, err := http.Get(url)
