@@ -76,7 +76,6 @@ func TestCopy(t *testing.T) {
 	if err := compare(s, cp); err == nil {
 		t.Errorf("множества должны отличаться: %v !=  %v", &s, &cp)
 	}
-
 }
 
 func compare(s1, s2 IntSet) error {
