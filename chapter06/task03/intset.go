@@ -105,3 +105,10 @@ func Compare(s1, s2 IntSet) error {
 	}
 	return nil
 }
+
+// AddAll позволяет добавлять список значений.
+func (s *IntSet) AddAll(vals ...int) {
+	for _, v := range vals {
+		s.Add(v)
+	}
+}

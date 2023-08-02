@@ -1,7 +1,6 @@
 package intset
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -22,22 +21,8 @@ func TestAddAll(t *testing.T) {
 		}
 		got := *test.input.Copy()
 		got.AddAll(test.add...)
-		if err := compare(wait, got); err != nil {
+		if err := Compare(wait, got); err != nil {
 			t.Errorf("%d. wait: %v, got: %v", i+1, wait, got)
 		}
 	}
-}
-
-func compare(s1, s2 IntSet) error {
-	if s1.Len() != s2.Len() {
-		return fmt.Errorf("отличается длина: s1.Len = %d, s2.Len = %d",
-			s1.Len(), s2.Len())
-	}
-	for i, w := range s1.words {
-		if s2.words[i] != w {
-			return fmt.Errorf("элементы слайсов words[%d] отличаются: %d != %d",
-				i, w, s2.words[i])
-		}
-	}
-	return nil
 }
