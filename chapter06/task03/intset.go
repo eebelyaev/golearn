@@ -61,7 +61,7 @@ func (s *IntSet) String() string {
 // Len Возвращает количество элементов.
 func (s *IntSet) Len() (res int) {
 	for _, w := range s.words {
-		for i := 0; i < 6; i++ {
+		for i := 0; i < 64; i++ {
 			res += int(w & (1 << i) >> i)
 		}
 	}

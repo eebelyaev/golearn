@@ -6,35 +6,24 @@ import (
 )
 
 func TestLen(t *testing.T) {
-	type strtest struct {
-		input IntSet
-		wait  int
-	}
-	tests := []strtest{
-		{IntSet{[]uint64{0b1, 0b1, 0b1}}, 3},
-		{IntSet{[]uint64{0b11, 0b1, 0b1}}, 4},
-		{IntSet{[]uint64{0b100011, 0b1, 0b1}}, 5},
-	}
-	s := IntSet{}
-	s.Add(67)
-	s.Add(1)
-	tests = append(tests, strtest{s, 2})
-	for i, test := range tests {
-		t.Log(&test.input, test.input)
-		got := test.input.Len()
-		if test.wait != got {
-			t.Errorf("%d. wait: %d, got: %d", i+1, test.wait, got)
+	tests := [][]int{{}, {0}, {1, 2}, {1, 2, 60}, {1, 64, 2047, 2048}}
+	for _, input := range tests {
+		var s IntSet
+		for _, v := range input {
+			s.Add(v)
+		}
+		if s.Len() != len(input) {
+			t.Errorf("%v.Len: %d, wait: %d", input, s.Len(), len(input))
 		}
 	}
 }
 
 func TestRemove(t *testing.T) {
-	type strtest struct {
+	tests := []struct {
 		input []int
 		num   int
 		wait  []int
-	}
-	tests := []strtest{
+	}{
 		{[]int{0, 64, 128}, 3, []int{0, 64, 128}},
 		{[]int{0, 64, 128}, 64, []int{0, 128}},
 		{[]int{}, 0, []int{}},
