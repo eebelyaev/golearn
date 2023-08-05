@@ -8,13 +8,13 @@ func TestString(t *testing.T) {
 		wait  string
 	}{
 		{[]int{2, 4, 5, 1, 3}, "[1 2 3 4 5]"},
-		{[]int{2, 3, 1}, "[1 2 3]"},
+		{[]int{}, "[]"},
 		{[]int{0}, "[0]"},
 	}
 	for _, test := range tests {
-		tr := new(tree)
+		var tr *tree
 		for _, v := range test.input {
-			add(tr, v)
+			tr = add(tr, v)
 		}
 		got := tr.String()
 		if test.wait != got {
