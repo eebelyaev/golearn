@@ -1,6 +1,7 @@
 package syan
 
 import (
+	"errors"
 	"fmt"
 	"golearn/chapter05/iohtml"
 	"io"
@@ -8,6 +9,8 @@ import (
 
 	"golang.org/x/net/html"
 )
+
+var ErrSmallBuffer = errors.New("buffer too small")
 
 type LinkReader struct {
 	links []string
@@ -20,7 +23,7 @@ func (lr *LinkReader) Read(p []byte) (n int, err error) {
 			n = copy(p, v)
 			lr.links = lr.links[1:]
 		} else {
-			err = fmt.Errorf("buffer too small: need %d bytes", len(v))
+			err = fmt.Errorf("%w: need %d bytes", ErrSmallBuffer, len(v))
 		}
 	} else {
 		err = io.EOF
